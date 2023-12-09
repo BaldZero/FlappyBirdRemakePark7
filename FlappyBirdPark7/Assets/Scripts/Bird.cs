@@ -10,20 +10,22 @@ public class Bird : MonoBehaviour
     private bool isDead = false;
     private Rigidbody2D rb2d;
     private Animator animate;
+    PolygonCollider2D poly;
 
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         animate = GetComponent<Animator>();
+        poly = GetComponent<PolygonCollider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isDead == false)
+        if (isDead == false)
         {
-            if(Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 rb2d.velocity = Vector2.zero;
                 rb2d.AddForce(new Vector2(0, FlyForce));
@@ -31,9 +33,12 @@ public class Bird : MonoBehaviour
             }
         }
     }
-   void OnCollisionEnter2D(Collision2D collision)
-   {
+    void OnCollisionEnter2D(Collision2D collision)
+    {
         isDead = true;
         animate.SetTrigger("Dead");
-   }
+        poly.offset = new Vector2(0, 0.1f);
+        ControllGame.instance.BirdDead();
+        rb2d.velocity = Vector2.zero;
+    }
 }
