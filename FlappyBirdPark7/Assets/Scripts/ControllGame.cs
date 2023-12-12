@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ControllGame : MonoBehaviour
 {
@@ -9,6 +12,9 @@ public class ControllGame : MonoBehaviour
     public static ControllGame instance;
     public GameObject gameOverText;
     public bool GameOver = false;
+    public TextMeshProUGUI scoreText;
+
+    private int score = 0;
 
     public float scrollSpeed = -1.5f;
     // Start changed to awake. Awake called before Start.
@@ -31,6 +37,15 @@ public class ControllGame : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+    }
+    public void BirdScored()
+    {
+        if (GameOver)
+        {
+            return;
+        }
+        score++;
+        scoreText.text = "Score: " + score.ToString();
     }
     public void BirdDead()
     {
