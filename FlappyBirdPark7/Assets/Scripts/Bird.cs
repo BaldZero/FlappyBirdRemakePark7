@@ -6,11 +6,15 @@ using UnityEngine;
 public class Bird : MonoBehaviour
 {
     public float FlyForce = 200f;
+    public AudioClip FlapSound;
+    public AudioClip DeadSound;
 
     private bool isDead = false;
     private Rigidbody2D rb2d;
     private Animator animate;
+    
     PolygonCollider2D poly;
+    AudioSource audiosource;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +22,12 @@ public class Bird : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         animate = GetComponent<Animator>();
         poly = GetComponent<PolygonCollider2D>();
+        audiosource = GetComponent<AudioSource>();
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audiosource.PlayOneShot(clip);
     }
 
     // Update is called once per frame
@@ -30,6 +40,7 @@ public class Bird : MonoBehaviour
                 rb2d.velocity = Vector2.zero;
                 rb2d.AddForce(new Vector2(0, FlyForce));
                 animate.SetTrigger("Flap");
+                PlaySound(FlapSound);
             }
         }
     }
@@ -40,5 +51,6 @@ public class Bird : MonoBehaviour
         poly.offset = new Vector2(0, 0.1f);
         ControllGame.instance.BirdDead();
         rb2d.velocity = Vector2.zero;
+        PlaySound(DeadSound);
     }
 }

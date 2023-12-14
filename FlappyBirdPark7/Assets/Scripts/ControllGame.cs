@@ -13,6 +13,9 @@ public class ControllGame : MonoBehaviour
     public GameObject gameOverText;
     public bool GameOver = false;
     public TextMeshProUGUI scoreText;
+    public AudioClip ScoreSound;
+
+    AudioSource audioSource;
 
     private int score = 0;
 
@@ -28,8 +31,14 @@ public class ControllGame : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    
     }
 
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -44,12 +53,21 @@ public class ControllGame : MonoBehaviour
         {
             return;
         }
+        
+        
         score++;
         scoreText.text = "Score: " + score.ToString();
+        PlaySound(ScoreSound);
     }
     public void BirdDead()
     {
         gameOverText.SetActive(true);
         GameOver = true;
     }
+
+    void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+    }
+    
 }
