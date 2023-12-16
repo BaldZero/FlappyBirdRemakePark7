@@ -53,4 +53,8 @@ public class Bird : MonoBehaviour
         rb2d.velocity = Vector2.zero;
         PlaySound(DeadSound);
     }
+
+
+
+
 }

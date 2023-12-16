@@ -13,6 +13,7 @@ public class ControllGame : MonoBehaviour
     public GameObject gameOverText;
     public bool GameOver = false;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI HighScoreText;
     public AudioClip ScoreSound;
 
     AudioSource audioSource;
@@ -23,26 +24,27 @@ public class ControllGame : MonoBehaviour
     // Start changed to awake. Awake called before Start.
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
-        else if(instance != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
-    
+
     }
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        updateHighScore();
     }
-    
+
     // Update is called once per frame
     void Update()
     {
-        if(GameOver == true && Input.anyKeyDown)
+        if (GameOver == true && Input.anyKeyDown)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -53,12 +55,22 @@ public class ControllGame : MonoBehaviour
         {
             return;
         }
-        
-        
+
+
         score++;
         scoreText.text = "Score: " + score.ToString();
+        PlayerPrefs.SetInt("HighScore", score);
+        PlayerPrefs.GetInt("HighScore");
         PlaySound(ScoreSound);
     }
+    private void CheckHigScore()
+    {
+        if (score > PlayerPrefs.GetInt("HighScore"))
+        {
+            PlayerPrefs.SetInt("HighScore", score);
+        }
+    }
+
     public void BirdDead()
     {
         gameOverText.SetActive(true);
@@ -69,5 +81,9 @@ public class ControllGame : MonoBehaviour
     {
         audioSource.PlayOneShot(clip);
     }
-    
+    void updateHighScore()
+    {
+        HighScoreText.text = $"HighScore: {PlayerPrefs.GetInt("HighScore", 0)}";
+    }
+
 }
