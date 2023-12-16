@@ -46,12 +46,16 @@ public class Bird : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if(isDead == false)
+        {
+            PlaySound(DeadSound);
+        }
         isDead = true;
         animate.SetTrigger("Dead");
         poly.offset = new Vector2(0, 0.1f);
         ControllGame.instance.BirdDead();
         rb2d.velocity = Vector2.zero;
-        PlaySound(DeadSound);
+        
     }
 
 
