@@ -38,7 +38,7 @@ public class ControllGame : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        updateHighScore();
+        UpdateHighScore();
     }
 
     // Update is called once per frame
@@ -48,6 +48,7 @@ public class ControllGame : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        CheckHigScore();
     }
     public void BirdScored()
     {
@@ -59,15 +60,14 @@ public class ControllGame : MonoBehaviour
 
         score++;
         scoreText.text = "Score: " + score.ToString();
-        PlayerPrefs.SetInt("HighScore", score);
-        PlayerPrefs.GetInt("HighScore");
         PlaySound(ScoreSound);
     }
     private void CheckHigScore()
     {
-        if (score > PlayerPrefs.GetInt("HighScore"))
+        if (score > PlayerPrefs.GetInt("HighScore", 0))
         {
             PlayerPrefs.SetInt("HighScore", score);
+            UpdateHighScore() ;
         }
     }
 
@@ -81,7 +81,7 @@ public class ControllGame : MonoBehaviour
     {
         audioSource.PlayOneShot(clip);
     }
-    void updateHighScore()
+    void UpdateHighScore()
     {
         HighScoreText.text = $"HighScore: {PlayerPrefs.GetInt("HighScore", 0)}";
     }
